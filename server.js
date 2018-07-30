@@ -19,12 +19,21 @@ app.listen(8080, function() {
 });
 
 app.get('/api/notes', (req, res) => {
-  res.json(data);
+	const searchTerm = req.query.searchTerm;
+  if(searchTerm) {
+    //console.log(searchBy); // test for searchTerm in server console
+    const find = data.filter(note => note.title.includes(searchTerm) || note.content.includes(searchTerm));
+    //console.log(find);
+    res.json(find);
+  } else {
+    res.json(data);
+	}
+
 });
 
 app.get('/api/notes/:id', (req, res) => {
-	const id  = req.params.id;
-	const findObjByMatchId = data.find(item => item.id === Number(id));
+  const id  = req.params.id;
+  const findObjByMatchId = data.find(item => item.id === Number(id));
   res.json(findObjByMatchId);
 });
 
