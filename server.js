@@ -1,20 +1,26 @@
 'use strict';
-// INSERT EXPRESS APP CODE HERE...ls
+// create EXPRESS app
 const express = require('express');
+const requestLogger = require('./middleware/logger');
+
+const app = express();
+//logs all requests
+app.use(requestLogger);
+//static file server
+app.use(express.static('public'));
+//parse request body
+app.use(express.json());
+
 // Load array of notes
 const data = require('./db/notes');
 const simDB = require('./db/simDB');  // <<== add this
 const notes = simDB.initialize(data); // <<== and this
 
-const requestLogger = require('./middleware/logger');
 
 //console.log('Hello Noteful!');
 
-const app = express();
 
-app.use(requestLogger);
-//static file server
-app.use(express.static('public'));
+//++++++++++++++++++++++++++++++++++++++++++
 
 app.get('/api/notes', (req, res, next) => {
   const { searchTerm } = req.query;
@@ -26,18 +32,7 @@ app.get('/api/notes', (req, res, next) => {
     res.json(list); //responds with filtered array
 
   });
-
-  // if(searchTerm) {
-  //   //console.log(searchBy); // test for searchTerm in server console
-  //   const find = data.filter(note => note.title.includes(searchTerm) || note.content.includes(searchTerm));
-  //   //console.log(find);
-  //   res.json(find);
-  // } else {
-  //   res.json(data);
-  // }
-
 });
-
 
 app.get('/api/notes/:id', (req, res, next) => {
   const { id } = req.params;
@@ -54,15 +49,32 @@ app.get('/api/notes/:id', (req, res, next) => {
   // res.json(findObjByMatchId);
 });
 
-//temporary code to check runtime error generation
-app.get('/boom', (req, res, next) => {
-  throw new Error('Boom!!');
+app.put('/api/notes/:id', (req, res, next) => {
+  const id = req.params.id;
+
+  /***** Never trust users - validate input *****/
+  const updateObj = {};
+  const updateFields = ['title', 'content'];
+
+  updateFields.forEach(field => {
+    if (field in req.body) {
+      updateObj[field] = req.body[field];
+    }
+  });
+
+  notes.update(id, updateObj, (err, item) => {
+    if (err) {
+      return next(err);
+    }
+    if (item) {
+      res.json(item);
+    } else {
+      next();
+    }
+  });
 });
 
-
-
-//temporary code to check runtime error generation
-
+//++++++++++++++++++++++++++++++++++++++++++
 app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
@@ -76,8 +88,7 @@ app.use(function (err, req, res, next) {
     error: err
   });
 });
-
-//const { PORT }  = require('./config');
+//++++++++++++++++++++++++++++++++++++++++++
 
 app.listen(8080, function() {
   console.info(`Server listening on ${this.address().port}`);
@@ -85,3 +96,12 @@ app.listen(8080, function() {
   console.error(err);
 });
 
+
+// if(searchTerm) {
+//   //console.log(searchBy); // test for searchTerm in server console
+//   const find = data.filter(note => note.title.includes(searchTerm) || note.content.includes(searchTerm));
+//   //console.log(find);
+//   res.json(find);
+// } else {
+//   res.json(data);
+// }
