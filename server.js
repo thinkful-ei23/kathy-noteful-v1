@@ -21,16 +21,25 @@ app.use(requestLogger);
 //static file server
 app.use(express.static('public'));
 
-app.get('/api/notes', (req, res) => {
-  const searchTerm = req.query.searchTerm;
-  if(searchTerm) {
-    //console.log(searchBy); // test for searchTerm in server console
-    const find = data.filter(note => note.title.includes(searchTerm) || note.content.includes(searchTerm));
-    //console.log(find);
-    res.json(find);
-  } else {
-    res.json(data);
-  }
+app.get('/api/notes', (req, res, next) => {
+  const { searchTerm } = req.query;
+
+  notes.filter(searchTerm, (err, list)  => {
+    if (err) {
+      return next(err); // goes to error handler
+    }
+    res.json(list); //respons with filtered array
+
+  });
+
+  // if(searchTerm) {
+  //   //console.log(searchBy); // test for searchTerm in server console
+  //   const find = data.filter(note => note.title.includes(searchTerm) || note.content.includes(searchTerm));
+  //   //console.log(find);
+  //   res.json(find);
+  // } else {
+  //   res.json(data);
+  // }
 
 });
 
