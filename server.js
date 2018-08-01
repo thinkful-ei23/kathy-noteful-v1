@@ -8,12 +8,7 @@ const notes = simDB.initialize(data); // <<== and this
 
 const requestLogger = require('./middleware/logger');
 
-
-
-
-console.log('Hello Noteful!');
-
-
+//console.log('Hello Noteful!');
 
 const app = express();
 
@@ -28,7 +23,7 @@ app.get('/api/notes', (req, res, next) => {
     if (err) {
       return next(err); // goes to error handler
     }
-    res.json(list); //respons with filtered array
+    res.json(list); //responds with filtered array
 
   });
 
@@ -43,10 +38,20 @@ app.get('/api/notes', (req, res, next) => {
 
 });
 
-app.get('/api/notes/:id', (req, res) => {
-  const id  = req.params.id;
-  const findObjByMatchId = data.find(item => item.id === Number(id));
-  res.json(findObjByMatchId);
+
+app.get('/api/notes/:id', (req, res, next) => {
+  const { id } = req.params;
+
+  notes.find(id, (err, item) => {
+    if (err) {
+      return next(err); // goes to error handler
+    }
+    res.json(item); //responds with filtered array
+  });
+
+  // const id  = req.params.id;
+  // const findObjByMatchId = data.find(item => item.id === Number(id));
+  // res.json(findObjByMatchId);
 });
 
 //temporary code to check runtime error generation
