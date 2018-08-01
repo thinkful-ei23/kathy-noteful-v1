@@ -40,3 +40,34 @@ notes.update(1005, updateObj, (err, item) => {
     console.log('not found');
   }
 });
+
+// POST (Create) New Note
+const createObj = {
+  title: 'title',
+  content: 'content'
+};
+
+// POST http://local.com/item/35
+/*
+notes.post('/db/notes.json',​ ​(req,​ ​res)​ ​=>​ ​{
+  ​ ​​ ​res.location('http://localhost:8080/'); ​ ​​ ​
+    res.status(201).send(newItem);
+  });
+
+notes.create(createObj, (err, item) => {
+  if (err) {
+    console.error(err);
+  }
+  if (item) {
+    console.log(item);
+  } else {
+    console.log('not found, at least not with a teapot');
+  }
+});
+
+// DELETE
+notes.delete('/',​ ​(req,​ ​res)​ ​=>​ ​{ ​ ​​ ​
+  res.sendStatus(204);
+});
+
+*/
