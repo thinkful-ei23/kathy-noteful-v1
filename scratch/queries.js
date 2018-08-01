@@ -47,13 +47,6 @@ const createObj = {
   content: 'content'
 };
 
-// POST http://local.com/item/35
-/*
-notes.post('/db/notes.json',​ ​(req,​ ​res)​ ​=>​ ​{
-  ​ ​​ ​res.location('http://localhost:8080/'); ​ ​​ ​
-    res.status(201).send(newItem);
-  });
-
 notes.create(createObj, (err, item) => {
   if (err) {
     console.error(err);
@@ -61,13 +54,20 @@ notes.create(createObj, (err, item) => {
   if (item) {
     console.log(item);
   } else {
-    console.log('not found, at least not with a teapot');
+    console.log('not found here, nothing to see');
   }
 });
 
-// DELETE
-notes.delete('/',​ ​(req,​ ​res)​ ​=>​ ​{ ​ ​​ ​
-  res.sendStatus(204);
+// POST (Create) New Note
+
+notes.delete(1008, (err, item) => {
+  if (err) {
+    console.error(err);
+  }
+  if (item) {
+    console.log(item);
+  } else {
+    console.log('not found here, nada to see');
+  }
 });
 
-*/
