@@ -15,7 +15,7 @@ console.log('Hello Noteful!');
 
 const app = express();
 
-app.use(requestLogger)
+app.use(requestLogger);
 //static file server
 app.use(express.static('public'));
 
