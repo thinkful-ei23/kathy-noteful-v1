@@ -1,35 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Document</title>
 </head>
+
 <body>
 	<p>This is scratch.html</p>
 
 
 	<script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-    crossorigin="anonymous"></script>
+	 crossorigin="anonymous"></script>
 
 	<script type="text/javascript" src="scripts/api.js"></script>
 
+	<!-- <script>
+		// test get all
+		api.search({})
+			.then(response => {
+				console.log(response)
+			});
+
+		// test get all with search term
+		api.search({ searchTerm: 'gaga' })
+			.then(response => {
+				console.log(response)
+			});
+	</script>
 	<script>
-			// test get all
-			api.search({})
-				.then(response => {
-					console.log(response)
-				});
+		// test get details
+		api.details(1009)
+			.then(response => {
+				console.log(response)
+			});
 
-			// test get all with search term
-			api.search({searchTerm: 'gaga'})
-				.then(response => {
-					console.log(response)
-				});
-		</script>
+	</script>
+
+	<script>
+		// test update object
+		api.update(1007, { "title": "Droids", "content": "Much ado about nothing....." })
+			.then(response => {
+				console.log(response)
+			});
+
+	</script>
+
+	<script>
+		// test create object
+
+		api.create({ "title": "Greig", "content": "Holberg Suite for Strings" })
+			.then(response => {
+				console.log(response)
+			});
+
+	</script>
+
+	<script>
+		// test delete object
+		api.remove(1010)
+			.then(response => {
+				console.log(response)
+			});
+
+	</script> -->
+
+
+
 </body>
+
 </html>
-
-
-
