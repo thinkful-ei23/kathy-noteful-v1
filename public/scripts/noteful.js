@@ -71,7 +71,7 @@ const noteful = (function () {
 
     });
   }
-
+  //++++++++++++++++++++++++++++++
   function handleNoteFormSubmit() {
     $('.js-note-edit-form').on('submit', function (event) {
       event.preventDefault();
@@ -86,32 +86,36 @@ const noteful = (function () {
 
       if (noteObj.id) {
 
-        api.update(store.currentNote.id, noteObj, updateResponse => {
-          store.currentNote = updateResponse;
+        api.update(store.currentNote.id, noteObj)
+          .then(updateResponse => {
+            store.currentNote = updateResponse;
 
-          api.search(store.currentSearchTerm, searchResponse => {
-            store.notes = searchResponse;
-            render();
+            api.search(store.currentSearchTerm)
+              .then(searchResponse => {
+                store.notes = searchResponse;
+                render();
+              });
+
           });
-
-        });
 
       } else {
 
-        api.create(noteObj, createResponse => {
-          store.currentNote = createResponse;
+        api.create(noteObj)
+          .then(createResponse => {
+            store.currentNote = createResponse;
 
-          api.search(store.currentSearchTerm, searchResponse => {
-            store.notes = searchResponse;
-            render();
+            api.search(store.currentSearchTerm)
+              .then( searchResponse => {
+                store.notes = searchResponse;
+                render();
+              });
+
           });
-
-        });
       }
 
     });
   }
-
+  //++++++++++++++++++++++++++++++
   function handleNoteStartNewSubmit() {
     $('.js-start-new-note-form').on('submit', event => {
       event.preventDefault();
