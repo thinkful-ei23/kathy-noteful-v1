@@ -11,29 +11,43 @@ const notes = simDB.initialize(data);
 router.get('/notes', (req, res, next) => {
   const { searchTerm } = req.query;
 
-  notes.filter(searchTerm, (err, list)  => {
-    if (err) {
-      return next(err); // goes to error handler
-    }
-    res.json(list); //responds with filtered array
+  notes.filter(searchTerm)
+    .then(list => {
+      if(list) {
+        res.json(list);
+      } else {
+        next();
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
 
-  });
 });
 //GET single with params
 router.get('/notes/:id', (req, res, next) => {
   const { id } = req.params;
+  //+++++++++++++++++++++++++++++++++++++
+  notes.find(id)
+    .then(item => {
+      if(item) {
+        res.json(item);
+      } else {
+        next();
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
 
-  notes.find(id, (err, item) => {
-    if (err) {
-      return next(err); // goes to error handler
-    }
-    res.json(item); //responds with filtered array
-  });
-
-  // const id  = req.params.id;
-  // const findObjByMatchId = data.find(item => item.id === Number(id));
-  // res.json(findObjByMatchId);
+  // notes.find(id, (err, item) => {
+  //   if (err) {
+  //     return next(err); // goes to error handler
+  //   }
+  //   res.json(item); //responds with filtered array
 });
+//++++++++++++++++++++++++++++++++
+
 // PUT update an item
 router.put('/notes/:id', (req, res, next) => {
   const id = req.params.id;
@@ -55,16 +69,17 @@ router.put('/notes/:id', (req, res, next) => {
     return next(err);
   }
 
-  notes.update(id, updateObj, (err, item) => {
-    if (err) {
-      return next(err);
-    }
-    if (item) {
-      res.json(item);
-    } else {
-      next();
-    }
-  });
+  notes.update(id, updateObj)
+    .then (item => {
+      if (item) {
+        res.json(item);
+      } else {
+        next();
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
 });
 
 // POST (insert) an item
@@ -79,28 +94,36 @@ router.post('/notes', (req, res, next) => {
     return next(err);
   }
 
-  notes.create(newItem, (err, item) => {
-    if (err) {
-      return next(err);
-    }
-    if (item) {
-      res.location(`http://${req.headers.host}/notes/${item.id}`).status(201).json(item);
-    } else {
-      next();
-    }
-  });
+  notes.create(newItem)
+    .then(newItem => {
+      if (newItem) {
+        res.location(`http://${req.headers.host}/api/notes/${newItem.id}`).status(201).json(newItem);
+      } else {
+        next();
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
 });
+
 
 // Delete an item
 router.delete('/notes/:id', (req, res, next) => {
   const id = req.params.id;
 
-  notes.delete(id, (err) => {
-    if (err) {
-      return next(err);
-    }
-    res.sendStatus(204);
-  });
+  notes.delete(id)
+    .then(id => {
+      if (id) {
+        res.sendStatus(204);
+      } else {
+        next();
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
+
 });
 
 //+++++++++++++++++++++++
