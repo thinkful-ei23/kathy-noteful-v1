@@ -138,12 +138,49 @@ describe('GET /api/notes/:id', function () {
         expect(res).to.have.status(404);
       });
   });
-
-
-
-  // end of descripb GET api/notes/:id
+  // end of describe GET api/notes/:id
 });
 
+describe('POST /api/notes', function () {
+
+  it('should create and return a new item when provided valid data', function () {
+    const newItem = {
+      'title': 'The best article about cats ever!',
+      'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...'
+    };
+    return chai.request(app)
+      .post('/api/notes')
+      .send(newItem)
+      .then(function (res) {
+        expect(res).to.have.status(201);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('object');
+        expect(res.body).to.include.keys('id', 'title', 'content');
+
+        expect(res.body.id).to.equal(1010);
+        expect(res.body.title).to.equal(newItem.title);
+        expect(res.body.content).to.equal(newItem.content);
+        expect(res).to.have.header('location');
+      });
+  });
+
+  it('should return an error when missing "title" field', function () {
+    const newItem = {
+      'foo': 'bar'
+    };
+    return chai.request(app)
+      .post('/api/notes')
+      .send(newItem)
+      .catch(err => err.response)
+      .then(res => {
+        expect(res).to.have.status(400);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('object');
+        expect(res.body.message).to.equal('Missing `title` in request body');
+      });
+  });
+// end of describe POST api/notes/
+});
 
 
 
