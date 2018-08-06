@@ -142,7 +142,7 @@ describe('POST /api/notes', function () {
   it('should create and return a new item when provided valid data', function () {
     const newItem = {
       'title': 'The best article about cats ever!',
-      'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...'
+      'content': 'Lots of stuff...'
     };
     return chai.request(app)
       .post('/api/notes')
@@ -162,7 +162,7 @@ describe('POST /api/notes', function () {
 
   it('should return an error when missing "title" field', function () {
     const newItem = {
-      title: '', 'foo': 'bar'
+      'title': '', 'content': 'bar'
     };
     return chai.request(app)
       .post('/api/notes')
@@ -173,6 +173,8 @@ describe('POST /api/notes', function () {
         expect(res).to.be.json;
         expect(res.body).to.be.a('object');
         expect(res.body.message).to.equal('Missing `title` in request body');
+        //expect(res.body).to.include.keys('message', 'error');
+        //expect(res.body.error.status).to.equal(400);
       });
   });
 // end of describe POST api/notes/
@@ -215,7 +217,7 @@ describe('PUT /api/notes/:id', function () {
 
   it('should return an error when missing "title" field', function () {
     const updateItem = {
-      title: '', 'content': 'bar'
+      'title': '', 'content': 'What now?!?!'
     };
     return chai.request(app)
       .put('/api/notes')
