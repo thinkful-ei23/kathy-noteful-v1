@@ -130,10 +130,18 @@ describe('GET /api/notes/:id', function () {
         expect(res.body.title).to.equal('10 ways cats can help you live to 100');
       });
   });
+  it('should respond with a 404 for an invalid id', function () {
+    return chai.request(app)
+      .get('/api/notes/DOESNOTEXIST')
+      .catch(err => err.response)
+      .then(res => {
+        expect(res).to.have.status(404);
+      });
+  });
 
 
 
-// end of descripb GET api/notes/:id
+  // end of descripb GET api/notes/:id
 });
 
 
