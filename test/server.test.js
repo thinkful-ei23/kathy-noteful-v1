@@ -159,7 +159,7 @@ describe('POST /api/notes', function () {
         expect(res).to.have.header('location');
       });
   });
-
+/*
   it('should return an error when missing "title" field', function () {
     const newItem = {
       'title': '', 'content': 'bar'
@@ -176,7 +176,8 @@ describe('POST /api/notes', function () {
         //expect(res.body).to.include.keys('message', 'error');
         //expect(res.body.error.status).to.equal(400);
       });
-  });
+	});
+	*/
 // end of describe POST api/notes/
 });
 describe('PUT /api/notes/:id', function () {
@@ -214,7 +215,7 @@ describe('PUT /api/notes/:id', function () {
         expect(res).to.have.status(404);
       });
   });
-
+/*
   it('should return an error when missing "title" field', function () {
     const updateItem = {
       'title': '', 'content': 'What now?!?!'
@@ -230,7 +231,7 @@ describe('PUT /api/notes/:id', function () {
         expect(res.body.message).to.equal('Missing `title` in request body');
       });
   });
-
+*/
 });
 
 describe('DELETE  /api/notes/:id', function () {
