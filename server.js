@@ -32,7 +32,7 @@ app.use(function (req, res, next) {
 });
 
 // Catch-all error handler
-app.use(function (err, req, res/*, next*/) {
+app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.json({
     message: err.message,

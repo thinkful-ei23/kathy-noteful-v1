@@ -159,10 +159,10 @@ describe('POST /api/notes', function () {
         expect(res).to.have.header('location');
       });
   });
-/*
+
   it('should return an error when missing "title" field', function () {
     const newItem = {
-      'title': '', 'content': 'bar'
+       'content': 'bar'
     };
     return chai.request(app)
       .post('/api/notes')
@@ -177,7 +177,7 @@ describe('POST /api/notes', function () {
         //expect(res.body.error.status).to.equal(400);
       });
 	});
-	*/
+
 
 
 
@@ -218,13 +218,13 @@ describe('PUT /api/notes/:id', function () {
         expect(res).to.have.status(404);
       });
   });
-/*
+
   it('should return an error when missing "title" field', function () {
     const updateItem = {
-      'title': '', 'content': 'What now?!?!'
+       'content': 'What now?!?!'
     };
     return chai.request(app)
-      .put('/api/notes')
+      .put('/api/notes/1007')
       .send(updateItem)
       .catch(err => err.response)
       .then(res => {
@@ -234,7 +234,7 @@ describe('PUT /api/notes/:id', function () {
         expect(res.body.message).to.equal('Missing `title` in request body');
       });
   });
-*/
+
 });
 
 describe('DELETE  /api/notes/:id', function () {
