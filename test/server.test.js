@@ -60,10 +60,6 @@ describe('404 handler', function () {
 
 });
 //////////////////////////
-describe('GET /', function () {
-
-});
-//////////////////////////
 describe('GET /api/notes', function () {
 
   it('should return the default of 10 notes as an array', function () {
@@ -166,7 +162,7 @@ describe('POST /api/notes', function () {
 
   it('should return an error when missing "title" field', function () {
     const newItem = {
-      'foo': 'bar'
+      title: '', 'foo': 'bar'
     };
     return chai.request(app)
       .post('/api/notes')
@@ -180,6 +176,71 @@ describe('POST /api/notes', function () {
       });
   });
 // end of describe POST api/notes/
+});
+describe('PUT /api/notes/:id', function () {
+
+  it('should update the note', function () {
+    const updateItem = {
+      'title': 'What about dogs?!',
+      'content': 'woof woof'
+    };
+    return chai.request(app)
+      .put('/api/notes/1005')
+      .send(updateItem)
+      .then(function (res) {
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('object');
+        expect(res.body).to.include.keys('id', 'title', 'content');
+
+        expect(res.body.id).to.equal(1005);
+        expect(res.body.title).to.equal(updateItem.title);
+        expect(res.body.content).to.equal(updateItem.content);
+      });
+  });
+
+  it('should respond with a 404 for an invalid id', function () {
+    const updateItem = {
+      'title': 'What about dogs?!',
+      'content': 'woof woof'
+    };
+    return chai.request(app)
+      .put('/api/notes/DOESNOTEXIST')
+      .send(updateItem)
+      .catch(err => err.response)
+      .then(res => {
+        expect(res).to.have.status(404);
+      });
+  });
+
+  it('should return an error when missing "title" field', function () {
+    const updateItem = {
+      title: '', 'content': 'bar'
+    };
+    return chai.request(app)
+      .put('/api/notes')
+      .send(updateItem)
+      .catch(err => err.response)
+      .then(res => {
+        expect(res).to.have.status(400);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('object');
+        expect(res.body.message).to.equal('Missing `title` in request body');
+      });
+  });
+
+});
+
+describe('DELETE  /api/notes/:id', function () {
+
+  it('should delete an item by id', function () {
+    return chai.request(app)
+      .delete('/api/notes/1005')
+      .then(function (res) {
+        expect(res).to.have.status(204);
+      });
+  });
+
 });
 
 
