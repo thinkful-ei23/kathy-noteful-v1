@@ -89,18 +89,21 @@ describe('GET /api/notes', function () {
           expect(item).to.be.a('object');
           expect(item).to.include.keys('id', 'title', 'content');
         });
-      });
+			});
+		});
+
+    it('should return correct search results for a valid query', function () {
+			return chai.request(app)
+      .get('/api/notes?searchTerm=Not%20a%20Valid%20Search')
+      .then(function (res) {
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('array');
+        expect(res.body).to.have.length(0);
+			});
+		});
 
 
-
-
-  });
-
-
-
-
-
-
-
-
-});
+// end of describe ('GET /api/notes',
+    });
+//end of describe ('GET /api/notes',
