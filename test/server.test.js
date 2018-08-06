@@ -114,6 +114,29 @@ describe('GET /api/notes', function () {
         expect(res.body).to.have.length(0);
       });
   });
-// end of describe ('GET /api/notes',
 });
 //end of describe ('GET /api/notes',
+
+describe('GET /api/notes/:id', function () {
+  it('should return correct note object with id, title and content for a given id', function () {
+    return chai.request(app)
+      .get('/api/notes/1005')
+      .then(function (res) {
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('object');
+        expect(res.body).to.include.keys('id', 'title', 'content');
+        expect(res.body.id).to.equal(1005);
+        expect(res.body.title).to.equal('10 ways cats can help you live to 100');
+      });
+  });
+
+
+
+// end of descripb GET api/notes/:id
+});
+
+
+
+
+
